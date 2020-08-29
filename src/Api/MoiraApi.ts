@@ -11,6 +11,7 @@ import { ContactCreateInfo } from "../Domain/ContactCreateInfo";
 import { Subscription } from "../Domain/Subscription";
 import { Schedule } from "../Domain/Schedule";
 import { NotifierState } from "../Domain/MoiraServiceStates";
+import { Team, User } from "../Domain/Teams";
 
 export type SubscriptionCreateInfo = {
     sched: Schedule;
@@ -94,6 +95,13 @@ export interface IMoiraApi {
     delAllNotificationEvents(): Promise<void>;
     getNotifierState(): Promise<NotifierState>;
     setNotifierState(status: NotifierState): Promise<NotifierState>;
+    getTeams(): Promise<Team[]>;
+    addTeam(name: string, description: string): Promise<{ id: string }>;
+    getTeam(teamId: string): Promise<Team>;
+    setTeam(teamId: string, team: Omit<Team, "id">): Promise<Team>;
+    getUsers(teamId: string): Promise<User[]>;
+    setUserToGroup(teamId: string, user: Omit<User, "id">): Promise<User>;
+    delUserFromGroup(teamId: string, userId: string): Promise<void>;
 }
 
 class ApiError extends Error {
@@ -521,6 +529,83 @@ export default class MoiraApi implements IMoiraApi {
             method: "PUT",
             credentials: "same-origin",
             body: JSON.stringify(status),
+        });
+        await MoiraApi.checkStatus(response);
+        return response.json();
+    }
+
+    async getTeams(): Promise<Team[]> {
+        const url = `${this.apiUrl}/teams`;
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+        });
+        await MoiraApi.checkStatus(response);
+        return response.json();
+    }
+
+    async addTeam(name: string, description: string): Promise<{ id: string }> {
+        const url = `${this.apiUrl}/teams`;
+        const response = await fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify({
+                name: name,
+                description: description,
+            }),
+        });
+        await MoiraApi.checkStatus(response);
+        return response.json();
+    }
+
+    async getTeam(teamId: string): Promise<Team> {
+        const url = `${this.apiUrl}/teams/${teamId}`;
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+        });
+        await MoiraApi.checkStatus(response);
+        return response.json();
+    }
+
+    // TODO подумать на счет смерживания в teamId и team
+    async setTeam(teamId: string, team: Omit<Team, "id">): Promise<Team> {
+        const url = `${this.apiUrl}/teams/${teamId}`;
+        const response = await fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify(team),
+        });
+        await MoiraApi.checkStatus(response);
+        return response.json();
+    }
+
+    async getUsers(teamId: string): Promise<User[]> {
+        const url = `${this.apiUrl}/teams/${teamId}/users`;
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+        });
+        await MoiraApi.checkStatus(response);
+        return response.json();
+    }
+
+    async setUserToGroup(teamId: string, user: Omit<User, "id">): Promise<User> {
+        const url = `${this.apiUrl}/teams/${teamId}`;
+        const response = await fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            body: JSON.stringify(user),
+        });
+        await MoiraApi.checkStatus(response);
+        return response.json();
+    }
+
+    async delUserFromGroup(teamId: string, userId: string): Promise<void> {
+        const url = `${this.apiUrl}/teams/${teamId}/users/${userId}`;
+        const response = await fetch(url, {
+            method: "DELETE",
+            credentials: "same-origin",
         });
         await MoiraApi.checkStatus(response);
         return response.json();

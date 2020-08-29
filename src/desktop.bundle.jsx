@@ -11,6 +11,8 @@ import SettingsContainer from "./Containers/SettingsContainer";
 import NotificationListContainer from "./Containers/NotificationListContainer";
 import TagListContainer from "./Containers/TagListContainer";
 import PatternListContainer from "./Containers/PatternListContainer";
+import TeamContainer from "./Containers/TeamContainer";
+import TeamsContainer from "./Containers/TeamsContainer";
 import ErrorContainer from "./Containers/ErrorContainer";
 import { getPagePath } from "./Domain/Global";
 import cn from "./desktop.less";
@@ -21,8 +23,8 @@ import TriggerListDesktop from "./pages/trigger-list/trigger-list.desktop";
 import Trigger from "./pages/trigger/trigger";
 import TriggerDesktop from "./pages/trigger/trigger.desktop";
 
-const ResponsiveRoute = ({ container: Container, view: View, component: Component, ...rest }) => (
-    <Route {...rest} render={props => <Container {...props} view={View} />} />
+const ResponsiveRoute = ({ container: Container, view: View, component: _Component, ...rest }) => (
+    <Route {...rest} render={(props) => <Container {...props} view={View} />} />
 );
 
 function Desktop() {
@@ -57,6 +59,8 @@ function Desktop() {
                 />
                 <Route exact path={getPagePath("tags")} component={TagListContainer} />
                 <Route exact path={getPagePath("patterns")} component={PatternListContainer} />
+                <Route exact path={getPagePath("teams")} component={TeamsContainer} />
+                <Route exact path={getPagePath("team")} component={TeamContainer} />
                 <Route component={ErrorContainer} />
             </Switch>
             <Footer className={cn("footer")} />

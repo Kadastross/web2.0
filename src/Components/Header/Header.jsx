@@ -17,6 +17,7 @@ export default function Header(): React.Node {
                     <img className={cn("logo-img")} src={svgLogo} alt="Moira" />
                 </Link>
                 <nav className={cn("menu")}>
+                    <RouterLink to={getPageLink("teams")}>Teams</RouterLink>
                     <RouterLink to={getPageLink("settings")} icon={<SettingsIcon />}>
                         Notifications
                     </RouterLink>

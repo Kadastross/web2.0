@@ -8,6 +8,8 @@ export const PagesPaths = {
     notifications: "/notifications",
     tags: "/tags",
     patterns: "/patterns",
+    teams: "/teams",
+    team: "/team/:id",
 };
 
 export const PagesLinks = {
@@ -21,6 +23,8 @@ export const PagesLinks = {
     tags: "/tags",
     patterns: "/patterns",
     docs: "//moira.readthedocs.org/",
+    teams: "/teams",
+    team: "/team/%id%",
 };
 
 export type PagePath = keyof typeof PagesPaths;

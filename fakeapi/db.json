@@ -4458,5 +4458,17 @@
     "health": {
         "state": "OK",
         "message": null
-    }
+    },
+    "teams": [
+        {
+            "id": "1",
+            "name": "Moira Team",
+            "description": "People who create the moira"
+        },
+        {
+            "id": "2",
+            "name": "Infrastructure",
+            "description": "Many good things for developers"
+        }
+    ]
 }
